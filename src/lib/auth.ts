@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { db } from "./db";
+import { log } from "console";
 
 function getGoogleCredentials() {
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -11,7 +12,7 @@ function getGoogleCredentials() {
     throw new Error("Missing Google Client Id");
   }
 
-  if (!clientSecret || clientSecret.length) {
+  if (!clientSecret) {
     throw new Error("Missing Google Client Secret");
   }
 

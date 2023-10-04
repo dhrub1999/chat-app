@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Vanilla Cream";
+  src:
+    url("/fonts/vanillacream-webfont.woff2") format("woff2"),
+    url("/fonts/vanillacream-webfont.woff") format("woff");
+}
+
+:root {
+  --font-vanillaCream: "Vanilla Cream";
+}
