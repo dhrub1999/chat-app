@@ -11,19 +11,23 @@ export async function POST(req: Request) {
 
     const { email: emailToAdd } = addFriendValidator.parse(body.email);
 
-    const RESTResponse = await fetch(
-      `${process.env.UPSTASH_REDIS_REST_URL}/get/user:email${emailToAdd}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-        },
-        cache: "no-store",
-      }
-    );
+    // const RESTResponse = await fetch(
+    //   `${process.env.UPSTASH_REDIS_REST_URL}/get/user:email${emailToAdd}`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+    //     },
+    //     cache: "no-store",
+    //   }
+    // );
 
-    const data = (await RESTResponse.json()) as { result: string | null };
-    const emailIdToAdd = data.result;
-    if (!emailIdToAdd) {
+    // const data = (await RESTResponse.json()) as { result: string | null };
+
+    // const userIdToAdd = data.result;
+
+    const userIdToAdd = await fetchRedis("get", `user:email:${emailToAdd}`) as string;
+
+    if (!userIdToAdd) {
       return new Response("User not found!", { status: 400 });
     }
 
@@ -32,7 +36,7 @@ export async function POST(req: Request) {
     if (!session) {
       return new Response("Unauthorized!", { status: 401 });
     }
-    if (emailIdToAdd === session.user.id) {
+    if (userIdToAdd === session.user.id) {
       return new Response("You cannot add yourself. <3", { status: 400 });
     }
 
@@ -40,7 +44,7 @@ export async function POST(req: Request) {
 
     const isAlreadySentRequest = (await fetchRedis(
       "sismember",
-      `user:${emailIdToAdd}:incoming_friend_requests`,
+      `user:${userIdToAdd}:incoming_friend_requests`,
       session.user.id
     )) as 0 | 1;
 
@@ -55,7 +59,7 @@ export async function POST(req: Request) {
     const isAlreadyFriends = (await fetchRedis(
       "sismember",
       `user:${session.user.id}:friends`,
-      emailIdToAdd
+      userIdToAdd
     )) as 0 | 1;
 
     if (isAlreadyFriends) {
@@ -66,7 +70,7 @@ export async function POST(req: Request) {
 
     //sending friend request
 
-    db.sadd(`user:${emailIdToAdd}:incoming_friend_requests`, session.user.id);
+    db.sadd(`user:${userIdToAdd}:incoming_friend_requests`, session.user.id);
     return new Response("Friend request sent!", { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
