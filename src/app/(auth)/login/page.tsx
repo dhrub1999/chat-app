@@ -29,7 +29,7 @@ const LogIn: FC<pageProps> = ({}) => {
         <HeroBg />
         <div className="relative md:px-8 px-3 lg:px-12 w-full grid text-center place-content-center place-items-center h-full">
           <div className="place-self-center flex flex-col gap-6 items-center">
-            <h1 className="text-display leading-[5rem] text-gray-600 lg:max-w-[700px]">
+            <h1 className="text-display font-vanillaCream leading-[5rem] text-gray-600 lg:max-w-[700px]">
               The{" "}
               <TypeAnimation
                 sequence={["Simple", 3000, "Secure", 3000, "Smooth", 3000]}

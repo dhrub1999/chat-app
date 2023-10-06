@@ -1,7 +1,9 @@
 import { Icon, Icons } from "@/components/Icons";
+import SignOutButton from "@/components/SignOutButton";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { Url } from "next/dist/shared/lib/router/router";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FC, Key, ReactNode } from "react";
@@ -33,8 +35,12 @@ const Layout = async ({ children }: LayoutProps) => {
   return (
     <div className="w-full flex h-screen">
       <div className="h-full w-full flex max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-        <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
+        <Link
+          href="/dashboard"
+          className="flex gap-x-2 h-16 shrink-0 items-center"
+        >
           <Icons.Logo className="h-12 w-auto fill-indigo-600" />
+          <p className="font-vanillaCream text-2xl text-zinc-800">Qualk</p>
         </Link>
 
         <div className="text-xs font-raleway font-semibold leading-6 text-gray-400">
@@ -43,6 +49,7 @@ const Layout = async ({ children }: LayoutProps) => {
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li className="font-raleway">
+              {/* //? User's chats here */}
               User's chats will be displayed here!!
             </li>
             <li>
@@ -69,6 +76,32 @@ const Layout = async ({ children }: LayoutProps) => {
                   );
                 })}
               </ul>
+            </li>
+
+            <li className=" mt-auto flex items-center">
+              <div className="flex flex-1 items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-gray-900">
+                <div className="relative h-8 w-8 bg-gray-50">
+                  <Image
+                    fill
+                    referrerPolicy="no-referrer"
+                    className="rounded-full"
+                    src={session.user.image || ""}
+                    alt="Your profile picture"
+                  />
+                </div>
+
+                {/* //? "sr-only" stands for "screen reader only, its a bunch of css properties for the people who are using screen readers." */}
+
+                <span className="sr-only">Your profile</span>
+                <div className="flex flex-col">
+                  <span aria-hidden="true">{session.user.name}</span>
+                  <span className="text-xs text-zinc-400" aria-hidden="true">
+                    {session.user.email}
+                  </span>
+                </div>
+              </div>
+
+              <SignOutButton className="h-full aspect-square" />
             </li>
           </ul>
         </nav>

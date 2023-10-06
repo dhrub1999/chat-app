@@ -24,6 +24,7 @@ const config: Config = {
       },
       colors: {
         "faded-white": "rgba(0, 0, 0, 0.02)",
+        "sidebar-faded-black": "rgba(0, 0, 0, .4)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
