@@ -1,21 +1,22 @@
 import { Icon, Icons } from "@/components/Icons";
 import SignOutButton from "@/components/SignOutButton";
+import UserFriendRequestInSidebar from "@/components/UserFriendRequestInSidebar";
+import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { Url } from "next/dist/shared/lib/router/router";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC, Key, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 interface UserOptions {
-  id: Key;
-  name: String;
-  href: Url;
+  id: number;
+  name: string;
+  href: string;
   Icon: Icon;
 }
 
@@ -31,6 +32,15 @@ const userOptions: UserOptions[] = [
 const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
   if (!session) notFound();
+
+  //? This fn will return the number of friend requests the authenticated user has
+
+  const friendReqCount = (
+    (await fetchRedis(
+      "smembers",
+      `user:${session.user.id}:incoming_friend_requests`
+    )) as User[]
+  ).length;
 
   return (
     <div className="w-full flex h-screen">
@@ -76,6 +86,15 @@ const Layout = async ({ children }: LayoutProps) => {
                   );
                 })}
               </ul>
+            </li>
+
+            {/* //? User's Friend requests will show up here */}
+
+            <li>
+              <UserFriendRequestInSidebar
+                userFriendRequestCount={friendReqCount}
+                sessionId={session.user.id}
+              />
             </li>
 
             <li className=" mt-auto flex items-center">
