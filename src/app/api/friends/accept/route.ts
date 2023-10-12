@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     await db.sadd(`user:${session.user.id}:friends`, idToAdd);
 
     //? Adding the user to the other profile's friendlist
-    await db.sadd(`user:${idToAdd}:friend`, session.user.id);
+    await db.sadd(`user:${idToAdd}:friends`, session.user.id);
 
     //? Removing the incoming friend request
     // await db.srem(`user:${idToAdd}:incoming_friend_requests`, session.user.id);

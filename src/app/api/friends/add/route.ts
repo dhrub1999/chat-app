@@ -1,9 +1,12 @@
-import { fetchRedis } from "@/helpers/redis";
-import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { addFriendValidator } from "@/lib/validations/add-friend";
-import { getServerSession } from "next-auth";
-import { z } from "zod";
+import { getServerSession } from 'next-auth';
+import { z } from 'zod';
+
+import { fetchRedis } from '@/helpers/redis';
+import { authOptions } from '@/lib/auth';
+import { db } from '@/lib/db';
+import { pusherServer } from '@/lib/pusher';
+import { toPusherKey } from '@/lib/utils';
+import { addFriendValidator } from '@/lib/validations/add-friend';
 
 export async function POST(req: Request) {
   try {
@@ -25,31 +28,34 @@ export async function POST(req: Request) {
 
     // const userIdToAdd = data.result;
 
-    const userIdToAdd = await fetchRedis("get", `user:email:${emailToAdd}`) as string;
+    const userIdToAdd = (await fetchRedis(
+      'get',
+      `user:email:${emailToAdd}`
+    )) as string;
 
     if (!userIdToAdd) {
-      return new Response("User not found!", { status: 400 });
+      return new Response('User not found!', { status: 400 });
     }
 
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return new Response("Unauthorized!", { status: 401 });
+      return new Response('Unauthorized!', { status: 401 });
     }
     if (userIdToAdd === session.user.id) {
-      return new Response("You cannot add yourself. <3", { status: 400 });
+      return new Response('You cannot add yourself. <3', { status: 400 });
     }
 
     //If the user is already sent a friend request
 
     const isAlreadySentRequest = (await fetchRedis(
-      "sismember",
+      'sismember',
       `user:${userIdToAdd}:incoming_friend_requests`,
       session.user.id
     )) as 0 | 1;
 
     if (isAlreadySentRequest) {
-      return new Response("Relax! Your request has already been sent.", {
+      return new Response('Relax! Your request has already been sent.', {
         status: 400,
       });
     }
@@ -57,26 +63,35 @@ export async function POST(req: Request) {
     //If they are already Friends
 
     const isAlreadyFriends = (await fetchRedis(
-      "sismember",
+      'sismember',
       `user:${session.user.id}:friends`,
       userIdToAdd
     )) as 0 | 1;
 
     if (isAlreadyFriends) {
-      return new Response("You are already friends", {
+      return new Response('You are already friends', {
         status: 400,
       });
     }
 
-    //sending friend request
+    //? Pusher notification for valid Friend Request
+    pusherServer.trigger(
+      toPusherKey(`user:${userIdToAdd}:incoming_friend_requests`),
+      'incoming_friend_requests',
+      {
+        senderId: session.user.id,
+        senderEmail: session.user.email,
+      }
+    );
 
+    //? sending friend request
     db.sadd(`user:${userIdToAdd}:incoming_friend_requests`, session.user.id);
-    return new Response("Friend request sent!", { status: 200 });
+    return new Response('Friend request sent!', { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response("Invalid request payload", { status: 422 });
+      return new Response('Invalid request payload', { status: 422 });
     }
 
-    return new Response("Something went wrong", { status: 400 });
+    return new Response('Something went wrong', { status: 400 });
   }
 }

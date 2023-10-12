@@ -1,20 +1,20 @@
-import { NextAuthOptions } from "next-auth";
-import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
-import GoogleProvider from "next-auth/providers/google";
-import { db } from "./db";
-import { log } from "console";
-import { fetchRedis } from "@/helpers/redis";
+import { NextAuthOptions } from 'next-auth';
+import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter';
+import GoogleProvider from 'next-auth/providers/google';
+
+import { db } from './db';
+import { fetchRedis } from '@/helpers/redis';
 
 function getGoogleCredentials() {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
-  if (!clientId || clientId.length == 0) {
-    throw new Error("Missing Google Client Id");
+  if (!clientId || clientId.length === 0) {
+    throw new Error('Missing Google Client Id');
   }
 
   if (!clientSecret) {
-    throw new Error("Missing Google Client Secret");
+    throw new Error('Missing Google Client Secret');
   }
 
   return { clientId, clientSecret };
@@ -23,10 +23,10 @@ function getGoogleCredentials() {
 export const authOptions: NextAuthOptions = {
   adapter: UpstashRedisAdapter(db),
   session: {
-    strategy: "jwt", //JWT stands for "JSON Web Token." It is a compact, self-contained means of representing claims to be transferred between two parties. In simpler terms, it's a way to securely transmit information between a client (usually a web browser) and a server, or between different parts of an application.
+    strategy: 'jwt', //? JWT stands for "JSON Web Token." It is a compact, self-contained means of representing claims to be transferred between two parties. In simpler terms, it's a way to securely transmit information between a client (usually a web browser) and a server, or between different parts of an application.
   },
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   providers: [
     GoogleProvider({
@@ -36,12 +36,14 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const dbUserResult = (await fetchRedis("get", `user:${token.id}`)) as
+      const dbUserResult = (await fetchRedis('get', `user:${token.id}`)) as
         | string
         | null;
 
       if (!dbUserResult) {
-        token.id = user!.id;
+        if (user) {
+          token.id = user!.id;
+        }
         return token;
       }
 
@@ -66,7 +68,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     redirect() {
-      return "/dashboard";
+      return '/dashboard';
     },
   },
 };
