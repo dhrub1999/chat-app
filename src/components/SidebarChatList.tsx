@@ -3,17 +3,62 @@
 import { FC, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { chatLinkConstructor } from '@/lib/utils';
+import { chatLinkConstructor, toPusherKey } from '@/lib/utils';
+import { pusherClient } from '@/lib/pusher';
+import toast from 'react-hot-toast';
+import ChatToast from './ChatToast';
 
 interface SideBarChatListProps {
   friends: User[];
   sessionId: string;
 }
 
+interface ExtendedMessage extends Message {
+  senderImg: string;
+  senderName: string;
+}
+
 const SideBarChatList: FC<SideBarChatListProps> = ({ friends, sessionId }) => {
   const router = useRouter();
   const pathName = usePathname();
   const [unseenMsgs, setUnseenMsgs] = useState<Message[]>([]);
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`));
+
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
+
+    const newFriendHandler = () => router.refresh();
+    const chatHandler = (message: ExtendedMessage) => {
+      const shouldNotify =
+        pathName !==
+        `/dashboard/chat/${chatLinkConstructor(sessionId, message.senderId)}`;
+
+      if (!shouldNotify) return;
+
+      toast.custom((t) => (
+        //? Custom Component
+        <ChatToast
+          t={t}
+          sessionId={sessionId}
+          senderId={message.senderId}
+          senderImg={message.senderImg}
+          senderMessage={message.text}
+          senderName={message.senderName}
+        />
+      ));
+      setUnseenMsgs((prev) => [...prev, message]);
+    };
+
+    pusherClient.bind(`new_message`, chatHandler);
+    pusherClient.bind('new_friend', newFriendHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:chats`));
+
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
+    };
+  }, [pathName, sessionId, router]);
 
   //? Checking the credentials for checking new messages for the user.
   useEffect(() => {

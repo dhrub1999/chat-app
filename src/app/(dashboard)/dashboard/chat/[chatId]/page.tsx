@@ -72,7 +72,6 @@ const page = async ({ params }: PageProps) => {
   //? selecting the id of the user's friend
   const chatPartnerId = user.id === userId1 ? userId2 : userId1;
 
-
   const chatPartnerRaw = (await fetchRedis(
     'get',
     `user:${chatPartnerId}`
@@ -81,10 +80,10 @@ const page = async ({ params }: PageProps) => {
   const initialMessages = await getChatMessages(chatId);
 
   return (
-    <div className='flex h-full max-h-[calc(100vh-6rem)] flex-1 flex-col justify-between'>
+    <div className='relative flex h-full flex-1 flex-col justify-between bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-100 to-gray-300 pb-10'>
       <div className='flex justify-between border-b-2 border-gray-200 py-3 sm:items-center'>
         <div className='relative flex items-center space-x-4'>
-          <div className='relative'>
+          <div className='relative ml-4'>
             <div className='relative h-8 w-8 sm:h-12 sm:w-12'>
               <Image
                 fill
@@ -98,12 +97,14 @@ const page = async ({ params }: PageProps) => {
 
           <div className='flex flex-col leading-tight'>
             <div className='flex items-center text-xl'>
-              <span className='mr-3 font-semibold text-gray-700'>
+              <span className='mr-3 font-raleway font-bold text-zinc-800'>
                 {chatPartner.name}
               </span>
             </div>
 
-            <span className='text-sm text-gray-600'>{chatPartner.email}</span>
+            <span className='font-raleway text-sm font-medium tracking-wider text-zinc-400'>
+              {chatPartner.email}
+            </span>
           </div>
         </div>
       </div>

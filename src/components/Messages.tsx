@@ -49,7 +49,7 @@ const Messages: FC<MessagesProps> = ({
   return (
     <div
       id='messages'
-      className='scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto p-3'
+      className='scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto px-6 py-3'
     >
       <div ref={scrollDownRef} />
 
@@ -77,15 +77,18 @@ const Messages: FC<MessagesProps> = ({
                 )}
               >
                 <span
-                  className={cn('inline-block rounded-lg px-4 py-2', {
-                    'bg-indigo-600 text-white': isCurrUser,
-                    'bg-gray-200 text-gray-800': !isCurrUser,
-                    'rounded-br-none': !newMsgFromSameUser && isCurrUser,
-                    'rounded-bl-none': !newMsgFromSameUser && !isCurrUser,
-                  })}
+                  className={cn(
+                    'inline-block  rounded-lg px-4 py-2 shadow-sm',
+                    {
+                      'bg-indigo-600 text-white': isCurrUser,
+                      'bg-gray-50 text-gray-800': !isCurrUser,
+                      'rounded-br-none': !newMsgFromSameUser && isCurrUser,
+                      'rounded-bl-none': !newMsgFromSameUser && !isCurrUser,
+                    }
+                  )}
                 >
                   {msg.text}{' '}
-                  <span className='ml-2 text-xs text-gray-400'>
+                  <span className='ml-2 text-xs text-[#82d92b]'>
                     {formatTimestamp(msg.timestamp)}
                   </span>
                 </span>

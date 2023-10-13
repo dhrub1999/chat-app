@@ -88,7 +88,9 @@ const Layout = async ({ children }: LayoutProps) => {
                         <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.72rem] font-medium text-gray-400 transition-colors duration-200 ease-in group-hover:border-indigo-600 group-hover:text-indigo-600'>
                           <Icon className='h-4 w-4' />
                         </span>
-                        <span className='truncate'>{option.name}</span>
+                        <span className=' truncate font-raleway font-semibold transition-colors'>
+                          {option.name}
+                        </span>
                       </Link>
                     </li>
                   );
@@ -106,7 +108,7 @@ const Layout = async ({ children }: LayoutProps) => {
 
             <li className=' mt-auto flex items-center'>
               <div className='flex flex-1 items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-gray-900'>
-                <div className='relative h-8 w-8 bg-gray-50'>
+                <div className='relative h-10 w-10 rounded-full bg-gray-50 p-4 ring-2'>
                   <Image
                     fill
                     referrerPolicy='no-referrer'
@@ -120,8 +122,16 @@ const Layout = async ({ children }: LayoutProps) => {
 
                 <span className='sr-only'>Your profile</span>
                 <div className='flex flex-col'>
-                  <span aria-hidden='true'>{session.user.name}</span>
-                  <span className='text-xs text-zinc-400' aria-hidden='true'>
+                  <span
+                    aria-hidden='true'
+                    className='font-raleway font-extrabold text-indigo-600'
+                  >
+                    {session.user.name}
+                  </span>
+                  <span
+                    className='font-raleway text-xs tracking-wide text-zinc-400'
+                    aria-hidden='true'
+                  >
                     {session.user.email}
                   </span>
                 </div>

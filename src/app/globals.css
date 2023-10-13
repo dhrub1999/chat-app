@@ -46,8 +46,8 @@
 
 .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
   --bg-opacity: 1;
-  background: #edf2f7;
-  background-color: rgba(237, 242, 247, var(--bg-opacity));
+  background: #9d9d9d;
+  /* background-color: rgba(237, 242, 247, var(--bg-opacity)); */
 }
 
 .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
