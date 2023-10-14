@@ -28,8 +28,7 @@ const page: FC = async () => {
   );
 
   return (
-    <main className='relative grid h-screen w-full place-content-center place-items-center overflow-hidden'>
-      <HeroBg />
+    <main className='mt-10 grid h-full w-full place-content-center place-items-center'>
       <section className='container relative rounded-md bg-faded-white px-8 py-16 text-center shadow-md backdrop-blur-[120px] md:px-10 md:py-20 lg:rounded-lg lg:px-12 lg:py-24'>
         <h3 className='mb-8 font-vanillaCream text-3xl text-gray-900'>
           All friend requests.

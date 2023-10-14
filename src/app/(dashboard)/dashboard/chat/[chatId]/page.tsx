@@ -80,10 +80,49 @@ const page = async ({ params }: PageProps) => {
   const initialMessages = await getChatMessages(chatId);
 
   return (
-    <div className='relative flex h-full flex-1 flex-col justify-between bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-100 to-gray-300 pb-10'>
+    // <div className='flex flex-1 flex-col justify-between bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-100 to-gray-300 pb-10'>
+    //   <div className='fixed top-[4rem] flex w-full justify-between border-b-2 border-gray-300 bg-sidebar-faded-black py-3  sm:items-center'>
+    //     <div className='relative flex items-center space-x-4'>
+    //       <div className='relative ml-4'>
+    //         <div className='relative h-8 w-8 sm:h-12 sm:w-12'>
+    //           <Image
+    //             fill
+    //             referrerPolicy='no-referrer'
+    //             src={chatPartner.image}
+    //             alt={`${chatPartner.name} profile picture`}
+    //             className='rounded-full'
+    //           />
+    //         </div>
+    //       </div>
+
+    //       <div className='flex flex-col leading-tight'>
+    //         <div className='flex items-center text-xl'>
+    //           <span className='mr-3 font-raleway text-sm font-bold text-zinc-800'>
+    //             {chatPartner.name}
+    //           </span>
+    //         </div>
+
+    //         <span className='font-raleway text-sm font-medium tracking-wider text-zinc-800'>
+    //           {chatPartner.email}
+    //         </span>
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   <Messages
+    //     chatId={chatId}
+    //     chatPartner={chatPartner}
+    //     sessionImg={session.user.image}
+    //     sessionId={session.user.id}
+    //     initialMessages={initialMessages}
+    //   />
+    //   <ChatInput chatId={chatId} chatPartner={chatPartner} />
+    // </div>
+
+    <div className='justify-bet ml-5 mt-[3.5rem] flex h-full max-h-[calc(100vh-6rem)] flex-1 flex-col font-raleway md:mt-0 md:max-h-[calc(100vh-3rem)]'>
       <div className='flex justify-between border-b-2 border-gray-200 py-3 sm:items-center'>
         <div className='relative flex items-center space-x-4'>
-          <div className='relative ml-4'>
+          <div className='relative'>
             <div className='relative h-8 w-8 sm:h-12 sm:w-12'>
               <Image
                 fill
@@ -96,13 +135,13 @@ const page = async ({ params }: PageProps) => {
           </div>
 
           <div className='flex flex-col leading-tight'>
-            <div className='flex items-center text-xl'>
-              <span className='mr-3 font-raleway font-bold text-zinc-800'>
+            <div className='flex items-center text-lg md:text-xl'>
+              <span className='mr-3 font-bold  text-gray-700'>
                 {chatPartner.name}
               </span>
             </div>
 
-            <span className='font-raleway text-sm font-medium tracking-wider text-zinc-400'>
+            <span className='text-xs text-gray-600 md:text-sm'>
               {chatPartner.email}
             </span>
           </div>

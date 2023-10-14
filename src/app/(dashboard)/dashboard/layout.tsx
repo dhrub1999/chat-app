@@ -1,3 +1,4 @@
+import ChatLayoutMobile from '@/components/ChatLayoutMobile';
 import { Icon, Icons } from '@/components/Icons';
 import SideBarChatList from '@/components/SidebarChatList';
 import SignOutButton from '@/components/SignOutButton';
@@ -48,7 +49,15 @@ const Layout = async ({ children }: LayoutProps) => {
 
   return (
     <div className='flex h-screen w-full'>
-      <div className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto overflow-x-hidden border-r border-gray-200 bg-white px-6'>
+      <div className='md:hidden'>
+        <ChatLayoutMobile
+          friends={friends}
+          session={session}
+          sidebarOptions={userOptions}
+          unseenRequestCount={friendReqCount}
+        />
+      </div>
+      <div className='hidden h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto overflow-x-hidden border-r border-gray-200 bg-white px-6 md:flex'>
         <Link
           href='/dashboard'
           className='flex h-16 shrink-0 items-center gap-x-2'

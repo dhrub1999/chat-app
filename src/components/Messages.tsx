@@ -38,7 +38,7 @@ const Messages: FC<MessagesProps> = ({
 
       pusherClient.unbind('incoming-message', newMessageHandler);
     };
-  }, []);
+  }, [chatId]);
 
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,7 +49,7 @@ const Messages: FC<MessagesProps> = ({
   return (
     <div
       id='messages'
-      className='scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto px-6 py-3'
+      className='scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch mt-10 flex h-full flex-1 flex-col-reverse gap-6 overflow-y-auto px-2 py-3 md:gap-4 md:px-6'
     >
       <div ref={scrollDownRef} />
 

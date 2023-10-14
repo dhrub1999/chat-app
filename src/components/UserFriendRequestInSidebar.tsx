@@ -46,7 +46,7 @@ const UserFriendRequestInSidebar: FC<UserFriendRequestInSidebarProps> = ({
 
       pusherClient.unbind(`new_friend`, addFriendHandler);
     };
-  }, []);
+  }, [sessionId]);
 
   return (
     <Link
