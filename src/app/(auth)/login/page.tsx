@@ -24,7 +24,6 @@ const LogIn: FC = () => {
   return (
     <>
       <section className='relative h-screen w-full overflow-hidden px-3'>
-        <HeroBg />
         <div className='relative grid h-full w-full place-content-center place-items-center px-3 text-center md:px-8 lg:px-12'>
           <div className='flex flex-col items-center gap-6 place-self-center'>
             <h1 className='font-vanillaCream text-display leading-[4rem] text-gray-600 md:leading-[5rem] lg:max-w-[700px]'>
@@ -39,10 +38,6 @@ const LogIn: FC = () => {
               <br />
               way to connect with a stranger.
             </h1>
-            <p className='font-400 font-sans text-lg text-gray-600 lg:max-w-[540px]'>
-              Proudly introducing an application which can you use for your
-              daily chats with just signing with Google account.
-            </p>
 
             <Button
               isLoading={isLoading}
@@ -79,7 +74,7 @@ const LogIn: FC = () => {
                   <path d='M1 1h22v22H1z' fill='none' />
                 </svg>
               )}
-              Google
+              Login with Google
             </Button>
           </div>
         </div>

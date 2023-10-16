@@ -53,3 +53,7 @@
 .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
   border-radius: 0.25rem;
 }
+
+body {
+  background-color: #f2f3f7;
+}
