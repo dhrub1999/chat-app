@@ -119,7 +119,7 @@ const page = async ({ params }: PageProps) => {
     //   <ChatInput chatId={chatId} chatPartner={chatPartner} />
     // </div>
 
-    <div className='ml-5 mt-[3.5rem] flex h-full max-h-[calc(100vh-6rem)] flex-1 flex-col justify-between font-raleway md:mt-0 md:max-h-[calc(100vh-3rem)]'>
+    <div className='ml-5 mt-[3.5rem] flex h-full max-h-[calc(100vh-8rem)] flex-1 flex-col justify-between font-raleway md:mt-0 md:max-h-[calc(100vh-3rem)]'>
       <div className='flex justify-between border-b-2 border-gray-200 py-3 sm:items-center'>
         <div className='relative flex items-center space-x-4'>
           <div className='relative'>
