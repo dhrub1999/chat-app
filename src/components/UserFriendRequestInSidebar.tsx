@@ -23,6 +23,7 @@ const UserFriendRequestInSidebar: FC<UserFriendRequestInSidebarProps> = ({
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
+
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
     const friendRequestHandler = () => {
@@ -41,6 +42,8 @@ const UserFriendRequestInSidebar: FC<UserFriendRequestInSidebarProps> = ({
       pusherClient.unsubscribe(
         toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
+
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
 
       pusherClient.unbind(`incoming_friend_requests`, friendRequestHandler);
 

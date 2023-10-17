@@ -1,10 +1,10 @@
 'use client';
 import { FC, useState } from 'react';
-import { TypeAnimation } from 'react-type-animation';
-import HeroBg from '@/components/ui/HeroBg';
-import Button from '@/components/ui/Button';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
+
+import Button from '@/components/ui/Button';
+import { Icons } from '@/components/Icons';
 
 const LogIn: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,26 +23,21 @@ const LogIn: FC = () => {
 
   return (
     <>
-      <section className='relative h-screen w-full overflow-hidden px-3'>
-        <div className='relative grid h-full w-full place-content-center place-items-center px-3 text-center md:px-8 lg:px-12'>
-          <div className='flex flex-col items-center gap-6 place-self-center'>
-            <h1 className='font-vanillaCream text-display leading-[4rem] text-gray-600 md:leading-[5rem] lg:max-w-[700px]'>
-              The{' '}
-              <TypeAnimation
-                sequence={['Simple', 3000, 'Secure', 3000, 'Smooth', 3000]}
-                wrapper='span'
-                speed={12}
-                repeat={Infinity}
-                style={{ color: '#0B67F0' }}
-              />
-              <br />
-              way to connect with a stranger.
+      <section className='grid h-screen place-items-center px-4 py-10'>
+        <div className='flex flex-col-reverse gap-y-10'>
+          <div className='text-center'>
+            <h1 className='font-lobster text-display text-[#212121] md:leading-[5rem] lg:max-w-[520px]'>
+              Qualk! Greet, Gather, & Gossip.
             </h1>
+            <p className='mt-5 font-raleway font-semibold text-[#3d3d3d]'>
+              I have featured Hangouts in a new way.
+            </p>
 
             <Button
               isLoading={isLoading}
               type='button'
               onClick={loginWithGoogle}
+              className='mt-10 rounded-full'
             >
               {isLoading ? null : (
                 <svg
@@ -77,6 +72,7 @@ const LogIn: FC = () => {
               Login with Google
             </Button>
           </div>
+          <Icons.Logo className='h-[200px] fill-indigo-600' />
         </div>
       </section>
     </>
